@@ -1,6 +1,6 @@
 {
   "name": "react-native-highlight-overlay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tinted overlay that allows one or more elements to be highlighted (non-tinted)",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
