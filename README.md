@@ -31,33 +31,33 @@ yarn add react-native-highlight-overlay
 
 ```js
 import {
-	HighlightableElement,
-	HighlightableElementProvider,
-	HighlightOverlay,
+    HighlightableElement,
+    HighlightableElementProvider,
+    HighlightOverlay,
 } from "react-native-highlight-overlay";
 
 // Remember to wrap the ROOT of your app in HighlightableElementProvider!
 return (
-	<HighlightableElementProvider>
-		<HighlightableElement id="important_item">
-			<TheRestOfTheOwl />
-		</HighlightableElement>
+    <HighlightableElementProvider>
+        <HighlightableElement id="important_item">
+            <TheRestOfTheOwl />
+        </HighlightableElement>
 
-		{/* 
-		  * The HighlightOverlay should be next to the ROOT of the app, 
-		  * since it is NOT a modal, it's just an absolutely positioned view.
-		  * If you want it to be a modal, wrap it in <Modal> yourself first,
-		  * but I recommend not using modals since they can be buggy.
-		  */}
-		<HighlightOverlay
-			// You would usually use a state variable for this :)
-			highlightedElementId="important_item"
-			onDismiss={() => {
-				// Called when the user clicks a non-highlighted element.
-				// Set "highlightedElementId" to nullish to hide the overlay.
-			}}
-		/>
-	</HighlightableElementProvider>
+        {/* 
+          * The HighlightOverlay should be next to the ROOT of the app, 
+          * since it is NOT a modal, it's just an absolutely positioned view.
+          * If you want it to be a modal, wrap it in <Modal> yourself first,
+          * but I recommend not using modals since they can be buggy.
+          */}
+        <HighlightOverlay
+            // You would usually use a state variable for this :)
+            highlightedElementId="important_item"
+            onDismiss={() => {
+                // Called when the user clicks a non-highlighted element.
+                // Set "highlightedElementId" to nullish to hide the overlay.
+            }}
+        />
+    </HighlightableElementProvider>
 );
 ```
 
