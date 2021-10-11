@@ -1,0 +1,15 @@
+{
+	"root": true,
+	"extends": ["react-native-wcandillon", "prettier"],
+	"rules": {
+		"no-undef": "off",
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-indent-props": ["error", "tab"],
+		"@typescript-eslint/no-use-before-define": "off",
+		"no-plusplus": "off",
+		"react-native/no-unused-styles": "error",
+		"yoda": ["error", "never", { "exceptRange": true }],
+		"@typescript-eslint/no-unused-vars": "off",
+		"import/no-default-export": "off"
+	}
+}
