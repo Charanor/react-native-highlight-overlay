@@ -1,4 +1,5 @@
-import React, { PropsWithChildren, useEffect, useRef } from "react";
+import type { PropsWithChildren } from "react";
+import React, { useEffect, useRef } from "react";
 import { View } from "react-native";
 
 import { useHighlightableElements } from "./context";
@@ -19,23 +20,20 @@ function HighlightableElement({ id, children }: HighlightableElementProps) {
 			return;
 		}
 
-		const timeoutId = setTimeout(
-			() =>
-				ref.current?.measureLayout(
-					// This is a typing error on ReactNative's part. 'rootRef' is a valid reference.
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					rootRef,
-					(x, y) => {
-						addElement(id, children, { x, y });
-						console.debug({ x, y });
-					},
-					() => {
-						console.error("Error measuring");
-					}
-				),
-			0
-		);
+		const timeoutId = setTimeout(() => {
+			ref.current?.measureLayout(
+				// This is a typing error on ReactNative's part. 'rootRef' is a valid reference.
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				rootRef,
+				(x, y) => {
+					addElement(id, children, { x, y });
+				},
+				() => {
+					console.error(`Error measuring layout of focused element with id ${id}.`);
+				}
+			);
+		}, 0);
 
 		return () => {
 			clearTimeout(timeoutId);
