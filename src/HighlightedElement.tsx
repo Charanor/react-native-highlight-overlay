@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 import React, { useEffect, useRef } from "react";
+import type { HostComponent } from "react-native";
 import { View } from "react-native";
 
 import { useHighlightableElements } from "./context";
@@ -23,9 +24,7 @@ function HighlightableElement({ id, children }: HighlightableElementProps) {
 		const timeoutId = setTimeout(() => {
 			ref.current?.measureLayout(
 				// This is a typing error on ReactNative's part. 'rootRef' is a valid reference.
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				rootRef,
+				rootRef as unknown as HostComponent<unknown>,
 				(x, y, width, height) => {
 					addElement(id, children, { x, y, width, height });
 				},

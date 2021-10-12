@@ -1,5 +1,4 @@
 import React from "react";
-import type { View } from "react-native";
 
 export type Bounds = {
 	x: number;
@@ -17,7 +16,7 @@ const HighlightableElementContext = React.createContext<
 		actions: {
 			readonly addElement: AddElement;
 			readonly removeElement: RemoveElement;
-			rootRef: View | null;
+			rootRef: React.Component<unknown> | null;
 		}
 	]
 >([

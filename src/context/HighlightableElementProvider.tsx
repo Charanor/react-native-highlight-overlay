@@ -14,14 +14,16 @@ export type HighlightableElementProviderProps = PropsWithChildren<{
 	 *    tab bars / headers / etc.
 	 *  - You have several providers for whatever reason (you probably shouldn't).
 	 */
-	rootRef?: View | null;
+	rootRef?: React.Component<unknown> | null;
 }>;
 
 function HighlightableElementProvider({
 	rootRef: externalRootRef,
 	children,
 }: HighlightableElementProviderProps) {
-	const [rootRef, setRootRef] = useState<View | null>(externalRootRef ?? null);
+	const [rootRef, setRootRef] = useState<React.Component<unknown> | null>(
+		externalRootRef ?? null
+	);
 	const [elements, setElements] = useState<ElementsRecord>({});
 
 	const addElement = useCallback<AddElement>((id, node, bounds) => {
