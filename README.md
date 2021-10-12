@@ -7,6 +7,10 @@ Supports switching between highlights, useful for a "tutorial" / "walkththrough"
 where you step the user through different parts of a screen. Also very useful for
 highlighting an element when the user enters the app from a deep link.
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/16232214/136886173-7cc62e23-9a93-4449-9055-dba580bb6e64.gif" height="500" />
+</p>
+
 ### ⚠️ Caveats ⚠️
  - If the `highlightedElementId` given to the `HighlightOverlay` does not
    correspond to an existing `HighlightableElement`, the overlay will be shown
@@ -16,6 +20,11 @@ highlighting an element when the user enters the app from a deep link.
    fraction. If this happens to you, set the `rootRef` of
    `HighlightableElementProvider` manually to the root element of your app. 
    However in most circumstances this is not necessary.
+ - If your `HighlightedElement` is inside a scroll view (like in the demo video above)
+   the `HighlightOverlay` must also be inside the scroll view, otherwise the highlighted
+   element will not properly overlay the "root" element. This is because of how React Native handles
+   measuring positions & sizes. I'm working on possible fixes to make this more
+   user-friendly.
 
 ## Installation
 
@@ -53,7 +62,7 @@ return (
             // You would usually use a state variable for this :)
             highlightedElementId="important_item"
             onDismiss={() => {
-                // Called when the user clicks a non-highlighted element.
+                // Called when the user clicks outside of the highlighted element.
                 // Set "highlightedElementId" to nullish to hide the overlay.
             }}
         />
