@@ -23,8 +23,10 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 							style={[
 								styles.highlightContainer,
 								{
-									left: highlightedElementData.position.x,
-									top: highlightedElementData.position.y,
+									left: highlightedElementData.bounds.x,
+									top: highlightedElementData.bounds.y,
+									width: highlightedElementData.bounds.width,
+									height: highlightedElementData.bounds.height,
 								},
 							]}
 						>

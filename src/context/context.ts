@@ -1,9 +1,14 @@
 import React from "react";
 import type { View } from "react-native";
 
-export type Position = { x: number; y: number };
-export type ElementsRecord = Record<string, { node: React.ReactNode; position: Position }>;
-export type AddElement = (id: string, node: React.ReactNode, position: Position) => void;
+export type Bounds = {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+};
+export type ElementsRecord = Record<string, { node: React.ReactNode; bounds: Bounds }>;
+export type AddElement = (id: string, node: React.ReactNode, bounds: Bounds) => void;
 export type RemoveElement = (id: string) => void;
 
 const HighlightableElementContext = React.createContext<

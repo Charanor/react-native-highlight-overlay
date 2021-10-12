@@ -1,7 +1,9 @@
-import React, { PropsWithChildren, useCallback, useMemo, useState } from "react";
+import type { PropsWithChildren } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import HighlightableElementContext, { AddElement, ElementsRecord, RemoveElement } from "./context";
+import type { AddElement, ElementsRecord, RemoveElement } from "./context";
+import HighlightableElementContext from "./context";
 
 export type HighlightableElementProviderProps = PropsWithChildren<{
 	/**
@@ -22,8 +24,8 @@ function HighlightableElementProvider({
 	const [rootRef, setRootRef] = useState<View | null>(externalRootRef ?? null);
 	const [elements, setElements] = useState<ElementsRecord>({});
 
-	const addElement = useCallback<AddElement>((id, node, position) => {
-		setElements((oldElements) => ({ ...oldElements, [id]: { node, position } }));
+	const addElement = useCallback<AddElement>((id, node, bounds) => {
+		setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds } }));
 	}, []);
 
 	const removeElement: RemoveElement = useCallback<RemoveElement>((id) => {

@@ -26,8 +26,8 @@ function HighlightableElement({ id, children }: HighlightableElementProps) {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				rootRef,
-				(x, y) => {
-					addElement(id, children, { x, y });
+				(x, y, width, height) => {
+					addElement(id, children, { x, y, width, height });
 				},
 				() => {
 					console.error(`Error measuring layout of focused element with id ${id}.`);
