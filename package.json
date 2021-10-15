@@ -26,7 +26,7 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "bob build",
-    "release": "release-it",
+    "release": "dotenv release-it --",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods"
@@ -61,6 +61,7 @@
     "@types/react-native": "^0.64.12",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "commitlint": "^11.0.0",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-native-wcandillon": "^3.7.0",
