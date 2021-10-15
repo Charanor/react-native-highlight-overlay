@@ -51,23 +51,23 @@ import {
 return (
     <HighlightableElementProvider>
         <HighlightableElement 
-			id="important_item_1"
-			options={{
-				// Options are useful if you want to configure the highlight, but can be left blank.
-				mode: "rectangle",
-				padding: 5,
-				borderRadius: 15,
-			}}
-		>
+            id="important_item_1"
+            options={{
+                // Options are useful if you want to configure the highlight, but can be left blank.
+                mode: "rectangle",
+                padding: 5,
+                borderRadius: 15,
+            }}
+        >
             <TheRestOfTheOwl />
         </HighlightableElement>
         <HighlightableElement 
-			id="important_item_2"
-			options={{
-				mode: "circle",
-				padding: 5,
-			}}
-		>
+            id="important_item_2"
+            options={{
+                mode: "circle",
+                padding: 5,
+            }}
+        >
             <TheRestOfTheOwl />
         </HighlightableElement>
 
