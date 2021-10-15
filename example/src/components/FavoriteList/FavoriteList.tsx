@@ -59,6 +59,7 @@ function FavoriteList({ setHighlightId }: FavoriteListProps) {
 							id={getUniqueKeyForItem(favItem)}
 							options={{
 								mode: "rectangle",
+								clickthroughHighlight: false,
 								padding: 5,
 								borderRadius: 10,
 							}}
