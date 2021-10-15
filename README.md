@@ -28,6 +28,8 @@ highlighting an element when the user enters the app from a deep link.
 
 ## Installation
 
+This package is available in the npm registry as [react-native-highlight-overlay](https://www.npmjs.com/package/react-native-highlight-overlay).
+
 ```sh
 # npm
 npm install react-native-highlight-overlay
