@@ -40,7 +40,11 @@
     "highlight",
     "focus",
     "typed",
-    "typescript"
+    "typescript",
+	"tooltip",
+	"tutorial",
+	"hint",
+	"walkthrough"
   ],
   "repository": "https://github.com/Charanor/react-native-highlight-overlay",
   "author": "Jesper Sporron <jesper.sporron@gmail.com> (https://github.com/Charanor)",
