@@ -26,8 +26,8 @@ function HighlightableElementProvider({
 	);
 	const [elements, setElements] = useState<ElementsRecord>({});
 
-	const addElement = useCallback<AddElement>((id, node, bounds) => {
-		setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds } }));
+	const addElement = useCallback<AddElement>((id, node, bounds, options) => {
+		setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
 	}, []);
 
 	const removeElement: RemoveElement = useCallback<RemoveElement>((id) => {
