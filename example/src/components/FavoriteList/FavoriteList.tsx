@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
 import { HighlightableElement } from "react-native-highlight-overlay";
 
@@ -53,13 +53,22 @@ function FavoriteList({ setHighlightId }: FavoriteListProps) {
 				}}
 			/>
 			<View style={styles.listContainer}>
-				{FAVORITES_LIST.map((favItem, idx, arr) => (
-					<HighlightableElement
-						key={getUniqueKeyForItem(favItem)}
-						id={getUniqueKeyForItem(favItem)}
-					>
-						<FavoriteItem style={styles.favoriteItem} {...favItem} />
-					</HighlightableElement>
+				{FAVORITES_LIST.map((favItem) => (
+					<Fragment key={getUniqueKeyForItem(favItem)}>
+						<HighlightableElement
+							id={getUniqueKeyForItem(favItem)}
+							options={{
+								mode: "rectangle",
+								clickthroughHighlight: false,
+								padding: 5,
+								borderRadius: 10,
+							}}
+						>
+							<FavoriteItem {...favItem} />
+						</HighlightableElement>
+						{/* We don't want to highlight the margin, so place it outside */}
+						<View style={styles.favoriteItemSpacing} />
+					</Fragment>
 				))}
 			</View>
 		</View>
@@ -73,8 +82,8 @@ const styles = StyleSheet.create({
 	listContainer: {
 		flex: 1,
 	},
-	favoriteItem: {
-		marginBottom: 15,
+	favoriteItemSpacing: {
+		height: 15,
 	},
 });
 

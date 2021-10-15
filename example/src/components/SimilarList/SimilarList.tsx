@@ -44,6 +44,10 @@ function SimilarList({ setHighlightId }: SimilarListProps) {
 					<HighlightableElement
 						key={getUniqueKeyForItem(item)}
 						id={getUniqueKeyForItem(item)}
+						options={{
+							mode: "circle",
+							padding: 15,
+						}}
 					>
 						<SimilarItem {...item} />
 					</HighlightableElement>

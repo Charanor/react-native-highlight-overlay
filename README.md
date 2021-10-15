@@ -8,7 +8,7 @@ where you step the user through different parts of a screen. Also very useful fo
 highlighting an element when the user enters the app from a deep link.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/16232214/136886173-7cc62e23-9a93-4449-9055-dba580bb6e64.gif" height="500" />
+  <img src="https://user-images.githubusercontent.com/16232214/137453222-06d4987c-8041-4942-9c57-e85071fb3bd2.gif" height="500" />
 </p>
 
 ### ⚠️ Caveats ⚠️
@@ -48,7 +48,24 @@ import {
 // Remember to wrap the ROOT of your app in HighlightableElementProvider!
 return (
     <HighlightableElementProvider>
-        <HighlightableElement id="important_item">
+        <HighlightableElement 
+			id="important_item_1"
+			options={{
+				// Options are useful if you want to configure the highlight, but can be left blank.
+				mode: "rectangle",
+				padding: 5,
+				borderRadius: 15,
+			}}
+		>
+            <TheRestOfTheOwl />
+        </HighlightableElement>
+        <HighlightableElement 
+			id="important_item_2"
+			options={{
+				mode: "circle",
+				padding: 5,
+			}}
+		>
             <TheRestOfTheOwl />
         </HighlightableElement>
 
@@ -60,7 +77,7 @@ return (
           */}
         <HighlightOverlay
             // You would usually use a state variable for this :)
-            highlightedElementId="important_item"
+            highlightedElementId="important_item_1"
             onDismiss={() => {
                 // Called when the user clicks outside of the highlighted element.
                 // Set "highlightedElementId" to nullish to hide the overlay.
