@@ -18,6 +18,8 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 
 	const [parentSize, setParentSize] = useState<Bounds | null>();
 
+	const clickthrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
+
 	return (
 		<View
 			style={StyleSheet.absoluteFill}
@@ -25,7 +27,11 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 			pointerEvents="box-none"
 		>
 			{highlightedElementData != null && parentSize != null && (
-				<Svg style={StyleSheet.absoluteFill} pointerEvents="box-none">
+				<Svg
+					style={StyleSheet.absoluteFill}
+					pointerEvents={clickthrough ? "box-none" : "auto"}
+					onPress={!clickthrough ? onDismiss : undefined}
+				>
 					<G>
 						<Defs>
 							<ClipPath id="elementBounds">

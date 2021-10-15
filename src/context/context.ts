@@ -5,7 +5,7 @@ export type HighlightOptions = CommonOptions & (RectangleOptions | CircleOptions
 export type CommonOptions = {
 	/**
 	 * If true, allows the user to click elements inside the highlight. Otherwise clicking inside the
-	 * highlight will act the same as clicking outside the highlight.
+	 * highlight will act the same as clicking outside the highlight, calling `onDismiss`.
 	 * @default true
 	 */
 	clickthroughHighlight?: boolean;
