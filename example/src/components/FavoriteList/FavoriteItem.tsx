@@ -1,6 +1,6 @@
 import React from "react";
 import type { ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
-import { StyleSheet, Image, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Image, Text, View } from "react-native";
 
 export const ITEM_HEIGHT = 60;
 const BORDER_RADIUS = 10;
@@ -15,7 +15,10 @@ export type FavoriteItemProps = {
 
 function FavoriteItem({ title, artist, duration, imageSource, style }: FavoriteItemProps) {
 	return (
-		<View style={[styles.container, style]}>
+		<Pressable
+			style={[styles.container, style]}
+			onPress={() => Alert.alert("You pressed", title)}
+		>
 			<Image source={imageSource} style={styles.image} />
 			<View style={styles.textSection}>
 				<Text style={styles.title}>{title}</Text>
@@ -24,7 +27,7 @@ function FavoriteItem({ title, artist, duration, imageSource, style }: FavoriteI
 					<Text style={styles.duration}>{duration}</Text>
 				</View>
 			</View>
-		</View>
+		</Pressable>
 	);
 }
 
