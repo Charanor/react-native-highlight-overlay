@@ -8,6 +8,7 @@ export type CommonOptions = {
 	 * highlight will act the same as clicking outside the highlight, calling `onDismiss`.
 	 * @default true
 	 */
+	// Typo - should be clickThrough (click-through is hyphenated).
 	clickthroughHighlight?: boolean;
 };
 
@@ -40,6 +41,7 @@ export type Bounds = {
 	width: number;
 	height: number;
 };
+
 export type ElementsRecord = Record<
 	string,
 	{
@@ -48,12 +50,14 @@ export type ElementsRecord = Record<
 		options?: HighlightOptions;
 	}
 >;
+
 export type AddElement = (
 	id: string,
 	node: React.ReactNode,
 	bounds: Bounds,
 	options?: HighlightOptions
 ) => void;
+
 export type RemoveElement = (id: string) => void;
 
 const HighlightableElementContext = React.createContext<

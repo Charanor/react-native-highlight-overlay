@@ -36,13 +36,12 @@ export type HighlightOverlayProps = {
  * @since 1.0.0
  */
 function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayProps) {
+	const [parentSize, setParentSize] = useState<Bounds | null>();
+
 	const [elements] = useHighlightableElements();
 	const highlightedElementData =
 		highlightedElementId != null ? elements[highlightedElementId] : null;
-
-	const [parentSize, setParentSize] = useState<Bounds | null>();
-
-	const clickthrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
+	const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
 
 	return (
 		<View
@@ -53,8 +52,8 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 			{highlightedElementData != null && parentSize != null && (
 				<Svg
 					style={StyleSheet.absoluteFill}
-					pointerEvents={clickthrough ? "box-none" : "auto"}
-					onPress={!clickthrough ? onDismiss : undefined}
+					pointerEvents={clickThrough ? "box-none" : "auto"}
+					onPress={!clickThrough ? onDismiss : undefined}
 				>
 					<G>
 						<Defs>
