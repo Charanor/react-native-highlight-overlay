@@ -13,10 +13,24 @@ export type HighlightableElementProviderProps = PropsWithChildren<{
 	 *  - The wrapper we provide is making your app look weird. This can happen when you use
 	 *    tab bars / headers / etc.
 	 *  - You have several providers for whatever reason (you probably shouldn't).
+	 * 
+	 * @since 1.0.0
 	 */
 	rootRef?: React.Component<unknown> | null;
 }>;
 
+/**
+ * The context provider that provides `HighlightOverlay` with the id's of all the
+ * `HighlightableElement`s.
+ *
+ * If the `rootRef` prop is not set this provider must be placed top-level since it also serves as
+ * the relative measuring point for the highlights.
+ *
+ * If the `rootRef` prop **is** set it only has to be above the `rootRef` and all `HighlightOverlay`
+ * and `HighlightableElement` that is being used.
+ *
+ * @since 1.0.0
+ */
 function HighlightableElementProvider({
 	rootRef: externalRootRef,
 	children,
