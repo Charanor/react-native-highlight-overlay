@@ -7,12 +7,23 @@ import { useHighlightableElements } from "./context";
 import type { HighlightOptions } from "./context/context";
 
 export type HighlightableElementProps = PropsWithChildren<{
-	/** The id used by the HighlightOverlay to find this element. */
+	/**
+	 * The id used by the HighlightOverlay to find this element.
+	 * @since 1.0.0
+	 */
 	id: string;
-	/** The options that decide how this element should look. If left undefined, it only highlights the element. */
+	/**
+	 * The options that decide how this element should look. If left undefined, it only highlights the element.
+	 * @since 1.2.0
+	 */
 	options?: HighlightOptions;
 }>;
 
+/**
+ * A component that allows its children to be highlighted by the `HighlightOverlay` component.
+ *
+ * @since 1.0.0
+ */
 function HighlightableElement({ id, options, children }: HighlightableElementProps) {
 	const ref = useRef<View | null>(null);
 
