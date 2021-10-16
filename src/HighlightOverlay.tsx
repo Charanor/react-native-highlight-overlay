@@ -7,10 +7,34 @@ import { useHighlightableElements } from "./context";
 import type { Bounds } from "./context/context";
 
 export type HighlightOverlayProps = {
+	/**
+	 * The id of the highlighted element. If `undefined`, `null`, or if the id does not exist,
+	 * the overlay is hidden.
+	 *
+	 * @since 1.0.0
+	 */
 	highlightedElementId?: string | null;
+
+	/**
+	 * Called when the highlight is requesting to be dismissed. This is usually when the overlay
+	 * (non-highlighted) part of the screen is pressed. The exact behavior is decided by each
+	 * HighlightableElement.
+	 *
+	 * @since 1.0.0
+	 */
 	onDismiss: () => void;
 };
 
+/**
+ * An overlay that optionally takes the id of a `HighlightableElement` to highlight
+ * (exclude from the overlay). This is not a modal, so it should be placed on top of all elements
+ * you want it to cover.
+ *
+ * **NOTE:** If the highlighted element is inside of a `ScrollView`, the `HighlightOverlay` should also
+ * be inside of that scroll view to ensure that the highlight is correctly placed.
+ *
+ * @since 1.0.0
+ */
 function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayProps) {
 	const [elements] = useHighlightableElements();
 	const highlightedElementData =
