@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import React, { useEffect, useRef } from "react";
-import type { HostComponent } from "react-native";
+import type { HostComponent, StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 
 import { useHighlightableElements } from "./context";
@@ -17,6 +17,7 @@ export type HighlightableElementProps = PropsWithChildren<{
 	 * @since 1.2.0
 	 */
 	options?: HighlightOptions;
+	style?: StyleProp<ViewStyle>;
 }>;
 
 /**
@@ -24,7 +25,7 @@ export type HighlightableElementProps = PropsWithChildren<{
  *
  * @since 1.0.0
  */
-function HighlightableElement({ id, options, children }: HighlightableElementProps) {
+function HighlightableElement({ id, options, children, style }: HighlightableElementProps) {
 	const ref = useRef<View | null>(null);
 
 	const [_, { addElement, removeElement, rootRef }] = useHighlightableElements();
@@ -43,7 +44,9 @@ function HighlightableElement({ id, options, children }: HighlightableElementPro
 					addElement(id, children, { x, y, width, height }, options);
 				},
 				() => {
-					console.error(`Error measuring layout of focused element with id ${id}.`);
+					ref.current?.measureInWindow((x, y, width, height) => {
+						addElement(id, children, { x, y, width, height }, options);
+					});
 				}
 			);
 		}, 0);
@@ -57,7 +60,7 @@ function HighlightableElement({ id, options, children }: HighlightableElementPro
 	}, [id, children, rootRef]);
 
 	return (
-		<View collapsable={false} ref={ref}>
+		<View collapsable={false} ref={ref} style={style}>
 			{children}
 		</View>
 	);
