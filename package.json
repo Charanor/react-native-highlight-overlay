@@ -1,6 +1,6 @@
 {
   "name": "react-native-highlight-overlay",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A tinted overlay that allows one or more elements to be highlighted (non-tinted)",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -41,10 +41,10 @@
     "focus",
     "typed",
     "typescript",
-	"tooltip",
-	"tutorial",
-	"hint",
-	"walkthrough"
+    "tooltip",
+    "tutorial",
+    "hint",
+    "walkthrough"
   ],
   "repository": "https://github.com/Charanor/react-native-highlight-overlay",
   "author": "Jesper Sporron <jesper.sporron@gmail.com> (https://github.com/Charanor)",
