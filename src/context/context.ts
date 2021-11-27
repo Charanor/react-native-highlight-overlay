@@ -60,13 +60,29 @@ export type AddElement = (
 
 export type RemoveElement = (id: string) => void;
 
+export type RootRefGetter = () => React.Component<unknown> | null;
+
 const HighlightableElementContext = React.createContext<
 	readonly [
-		elements: ElementsRecord,
+		elements: Readonly<ElementsRecord>,
 		actions: {
+			/**
+			 * @since 1.0
+			 */
 			readonly addElement: AddElement;
+			/**
+			 * @since 1.0
+			 */
 			readonly removeElement: RemoveElement;
-			rootRef: React.Component<unknown> | null;
+			/**
+			 * @deprecated since version `1.3`, use `getRootRef()` instead.
+			 */
+			readonly rootRef: React.Component<unknown> | null;
+			/**
+			 * @returns the reference to the root element used to calculate offsets for the highlights.
+			 * @since 1.3
+			 */
+			readonly getRootRef: RootRefGetter;
 		}
 	]
 >([
@@ -83,6 +99,11 @@ const HighlightableElementContext = React.createContext<
 			);
 		},
 		rootRef: null,
+		getRootRef: () => {
+			throw new Error(
+				"No implementation for 'getRootRef' found! Did you forget to wrap your app in <HighlightableElementProvider />?"
+			);
+		},
 	},
 ]);
 

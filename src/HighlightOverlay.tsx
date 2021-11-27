@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import Svg, { ClipPath, Defs, G, Path, Rect } from "react-native-svg";
+import Svg, { ClipPath, Defs, Path, Rect } from "react-native-svg";
 
 import constructClipPath from "./constructClipPath";
 import { useHighlightableElements } from "./context";
@@ -11,7 +11,7 @@ export type HighlightOverlayProps = {
 	 * The id of the highlighted element. If `undefined`, `null`, or if the id does not exist,
 	 * the overlay is hidden.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	highlightedElementId?: string | null;
 
@@ -20,7 +20,7 @@ export type HighlightOverlayProps = {
 	 * (non-highlighted) part of the screen is pressed. The exact behavior is decided by each
 	 * HighlightableElement.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	onDismiss: () => void;
 };
@@ -33,7 +33,7 @@ export type HighlightOverlayProps = {
  * **NOTE:** If the highlighted element is inside of a `ScrollView`, the `HighlightOverlay` should also
  * be inside of that scroll view to ensure that the highlight is correctly placed.
  *
- * @since 1.0.0
+ * @since 1.0
  */
 function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayProps) {
 	const [parentSize, setParentSize] = useState<Bounds | null>();
@@ -55,26 +55,24 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 					pointerEvents={clickThrough ? "box-none" : "auto"}
 					onPress={!clickThrough ? onDismiss : undefined}
 				>
-					<G>
-						<Defs>
-							<ClipPath id="elementBounds">
-								<Path
-									d={constructClipPath(highlightedElementData, parentSize)}
-									clipRule="evenodd"
-								/>
-							</ClipPath>
-						</Defs>
-						<Rect
-							x={0}
-							y={0}
-							width="100%"
-							height="100%"
-							clipPath="#elementBounds"
-							fill="black"
-							fillOpacity={0.7}
-							onPress={onDismiss}
-						/>
-					</G>
+					<Defs>
+						<ClipPath id="elementBounds">
+							<Path
+								d={constructClipPath(highlightedElementData, parentSize)}
+								clipRule="evenodd"
+							/>
+						</ClipPath>
+					</Defs>
+					<Rect
+						x={0}
+						y={0}
+						width="100%"
+						height="100%"
+						clipPath="#elementBounds"
+						fill="black"
+						fillOpacity={0.7}
+						onPress={onDismiss}
+					/>
 				</Svg>
 			)}
 		</View>
