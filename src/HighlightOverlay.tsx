@@ -6,6 +6,29 @@ import constructClipPath from "./constructClipPath";
 import { useHighlightableElements } from "./context";
 import type { Bounds } from "./context/context";
 
+const DEFAULT_OVERLAY_STYLE: OverlayStyle = {
+	color: "black",
+	opacity: 0.7,
+};
+
+export type OverlayStyle = {
+	/**
+	 * The color of the overlay. Should not include alpha in the color, use `opacity` prop for that.
+	 *
+	 * @default "black"
+	 * @since 1.3
+	 */
+	color?: string;
+
+	/**
+	 * The opacity of the overlay color.
+	 *
+	 * @default 0.7
+	 * @since 1.3
+	 */
+	opacity?: number;
+};
+
 export type HighlightOverlayProps = {
 	/**
 	 * The id of the highlighted element. If `undefined`, `null`, or if the id does not exist,
@@ -23,6 +46,14 @@ export type HighlightOverlayProps = {
 	 * @since 1.0
 	 */
 	onDismiss: () => void;
+
+	/**
+	 * The style of the overlay.
+	 *
+	 * @default { color: "black", opacity: 0.7 }
+	 * @since 1.3
+	 */
+	overlayStyle?: OverlayStyle;
 };
 
 /**
@@ -35,13 +66,20 @@ export type HighlightOverlayProps = {
  *
  * @since 1.0
  */
-function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayProps) {
+function HighlightOverlay({
+	highlightedElementId,
+	onDismiss,
+	overlayStyle = DEFAULT_OVERLAY_STYLE,
+}: HighlightOverlayProps) {
 	const [parentSize, setParentSize] = useState<Bounds | null>();
 
 	const [elements] = useHighlightableElements();
 	const highlightedElementData =
 		highlightedElementId != null ? elements[highlightedElementId] : null;
 	const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
+
+	const { color = DEFAULT_OVERLAY_STYLE.color, opacity = DEFAULT_OVERLAY_STYLE.opacity } =
+		overlayStyle;
 
 	return (
 		<View
@@ -69,8 +107,8 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 						width="100%"
 						height="100%"
 						clipPath="#elementBounds"
-						fill="black"
-						fillOpacity={0.7}
+						fill={color}
+						fillOpacity={opacity}
 						onPress={onDismiss}
 					/>
 				</Svg>
