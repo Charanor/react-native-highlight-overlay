@@ -28,7 +28,8 @@ export type HighlightableElementProps = PropsWithChildren<{
 function HighlightableElement({ id, options, children, style }: HighlightableElementProps) {
 	const ref = useRef<View | null>(null);
 
-	const [_, { addElement, removeElement, rootRef }] = useHighlightableElements();
+	const [_, { addElement, removeElement, getRootRef }] = useHighlightableElements();
+	const rootRef = getRootRef();
 
 	useEffect(() => {
 		const refVal = ref.current;

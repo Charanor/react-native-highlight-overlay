@@ -64,6 +64,9 @@ export type RootRefGetter = () => React.Component<unknown> | null;
 
 const HighlightableElementContext = React.createContext<
 	readonly [
+		/**
+		 * @since 1.0
+		 */
 		elements: Readonly<ElementsRecord>,
 		actions: {
 			/**
