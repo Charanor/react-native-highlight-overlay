@@ -18,7 +18,9 @@
     "react-dom": "16.13.1",
     "react-native": "0.63.4",
     "react-native-unimodules": "~0.14.5",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+	"react-native-highlight-overlay": "file:..",
+	"@types/react-native-highlight-overlay": "file:../lib/typescript"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
