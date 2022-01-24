@@ -1,5 +1,10 @@
 import React from "react";
 
+export type HighlightOffset = {
+	x: number;
+	y: number;
+};
+
 export type HighlightOptions = CommonOptions & (RectangleOptions | CircleOptions);
 
 export type CommonOptions = {
@@ -10,6 +15,15 @@ export type CommonOptions = {
 	 */
 	// Typo - should be clickThrough (click-through is hyphenated).
 	clickthroughHighlight?: boolean;
+
+	/**
+	 * If you want your highlight to be offset slightly from its original position you can manually
+	 * specify an offset here. Especially useful if your highlight is inside of a scroll view
+	 * (see example project).
+	 *
+	 * @since 1.3
+	 */
+	offset?: HighlightOffset;
 };
 
 export type RectangleOptions = {
