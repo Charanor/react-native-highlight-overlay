@@ -12,15 +12,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/react-native-highlight-overlay": "file:../lib/typescript",
     "expo": "^42.0.0",
     "expo-splash-screen": "~0.11.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-highlight-overlay": "file:..",
+    "react-native-reanimated": "~2.2.0",
     "react-native-unimodules": "~0.14.5",
-    "react-native-web": "~0.13.12",
-	"react-native-highlight-overlay": "file:..",
-	"@types/react-native-highlight-overlay": "file:../lib/typescript"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
