@@ -52,7 +52,7 @@ function HighlightOverlay({ highlightedElementId, onDismiss }: HighlightOverlayP
 			{highlightedElementData != null && parentSize != null && (
 				<Svg
 					style={StyleSheet.absoluteFill}
-					pointerEvents={clickThrough ? "box-none" : "auto"}
+					pointerEvents={clickThrough ? "none" : "auto"}
 					onPress={!clickThrough ? onDismiss : undefined}
 				>
 					<G>
