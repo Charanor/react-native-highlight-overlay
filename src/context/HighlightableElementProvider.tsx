@@ -41,16 +41,19 @@ function HighlightableElementProvider({
 	);
 	const [elements, setElements] = useState<ElementsRecord>({});
 
-	const addElement = useCallback<AddElement>((id, node, bounds, options) => {
-		if (
-			!elements[id] ||
-			node !== elements[id].node ||
-			!isEqual(bounds, elements[id].bounds) ||
-			!isEqual(options?.clickthroughHighlight, elements[id].options)
-		) {
-			setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
-		}
-	}, []);
+	const addElement = useCallback<AddElement>(
+		(id, node, bounds, options) => {
+			if (
+				!elements[id] ||
+				node !== elements[id].node ||
+				!isEqual(bounds, elements[id].bounds) ||
+				!isEqual(options?.clickthroughHighlight, elements[id].options)
+			) {
+				setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
+			}
+		},
+		[elements]
+	);
 
 	const removeElement: RemoveElement = useCallback<RemoveElement>((id) => {
 		setElements((oldElements) => {
