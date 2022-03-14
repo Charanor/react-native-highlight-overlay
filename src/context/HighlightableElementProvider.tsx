@@ -45,9 +45,8 @@ function HighlightableElementProvider({
 		(id, node, bounds, options) => {
 			if (
 				!elements[id] ||
-				node !== elements[id].node ||
 				!isEqual(bounds, elements[id].bounds) ||
-				!isEqual(options?.clickthroughHighlight, elements[id].options)
+				!isEqual(options, elements[id].options)
 			) {
 				setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
 			}
