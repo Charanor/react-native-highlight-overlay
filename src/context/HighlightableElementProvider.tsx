@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import isEqual from "lodash.isequal";
 
 import type { AddElement, ElementsRecord, RemoveElement } from "./context";
 import HighlightableElementContext from "./context";
@@ -13,7 +14,7 @@ export type HighlightableElementProviderProps = PropsWithChildren<{
 	 *  - The wrapper we provide is making your app look weird. This can happen when you use
 	 *    tab bars / headers / etc.
 	 *  - You have several providers for whatever reason (you probably shouldn't).
-	 * 
+	 *
 	 * @since 1.0.0
 	 */
 	rootRef?: React.Component<unknown> | null;
@@ -40,9 +41,18 @@ function HighlightableElementProvider({
 	);
 	const [elements, setElements] = useState<ElementsRecord>({});
 
-	const addElement = useCallback<AddElement>((id, node, bounds, options) => {
-		setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
-	}, []);
+	const addElement = useCallback<AddElement>(
+		(id, node, bounds, options) => {
+			if (
+				!elements[id] ||
+				!isEqual(bounds, elements[id].bounds) ||
+				!isEqual(options, elements[id].options)
+			) {
+				setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
+			}
+		},
+		[elements]
+	);
 
 	const removeElement: RemoveElement = useCallback<RemoveElement>((id) => {
 		setElements((oldElements) => {
