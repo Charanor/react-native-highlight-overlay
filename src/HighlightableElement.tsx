@@ -28,7 +28,7 @@ export type HighlightableElementProps = PropsWithChildren<{
 function HighlightableElement({ id, options, children, style }: HighlightableElementProps) {
 	const ref = useRef<View | null>(null);
 
-	const [_, { addElement, removeElement, getRootRef }] = useHighlightableElements();
+	const [_, { addElement, getRootRef }] = useHighlightableElements();
 	const rootRef = getRootRef();
 
 	useEffect(() => {
@@ -54,7 +54,6 @@ function HighlightableElement({ id, options, children, style }: HighlightableEle
 
 		return () => {
 			clearTimeout(timeoutId);
-			removeElement(id);
 		};
 		// We don't want to re-run this effect when addElement or removeElement changes.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,4 +66,4 @@ function HighlightableElement({ id, options, children, style }: HighlightableEle
 	);
 }
 
-export default HighlightableElement;
+export default React.memo(HighlightableElement);
