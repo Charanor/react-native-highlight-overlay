@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import isEqual from "lodash.isequal";
 
 import type {
 	AddElement,
@@ -48,9 +49,18 @@ function HighlightableElementProvider({
 	const [elements, setElements] = useState<ElementsRecord>({});
 	const [currentActiveOverlay, setCurrentActiveOverlay] = useState<OverlayData | null>(null);
 
-	const addElement = useCallback<AddElement>((id, node, bounds, options) => {
-		setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
-	}, []);
+	const addElement = useCallback<AddElement>(
+		(id, node, bounds, options) => {
+			if (
+				!elements[id] ||
+				!isEqual(bounds, elements[id].bounds) ||
+				!isEqual(options, elements[id].options)
+			) {
+				setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
+			}
+		},
+		[elements]
+	);
 
 	const removeElement: RemoveElement = useCallback<RemoveElement>((id) => {
 		setElements((oldElements) => {

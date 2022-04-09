@@ -132,11 +132,12 @@ function HighlightOverlay({
 		>
 			{hasContent && (
 				<AnimatedSvg
-					style={StyleSheet.absoluteFill}
-					pointerEvents={clickThrough ? "box-none" : "auto"}
+					key={highlightedElementId}
+					pointerEvents={clickThrough ? "none" : "auto"}
 					onPress={!clickThrough ? onDismiss : undefined}
 					entering={entering ?? undefined}
 					exiting={exiting ?? FadeOut}
+					style={StyleSheet.absoluteFill}
 				>
 					<Defs>
 						{Object.entries(elements).map(([id, element]) => (
