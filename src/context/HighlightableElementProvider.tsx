@@ -3,7 +3,14 @@ import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import isEqual from "lodash.isequal";
 
-import type { AddElement, ElementsRecord, RemoveElement } from "./context";
+import type {
+	AddElement,
+	ElementsRecord,
+	GetCurrentActiveOverlay,
+	OverlayData,
+	RemoveElement,
+	RootRefGetter,
+} from "./context";
 import HighlightableElementContext from "./context";
 
 export type HighlightableElementProviderProps = PropsWithChildren<{
@@ -15,7 +22,7 @@ export type HighlightableElementProviderProps = PropsWithChildren<{
 	 *    tab bars / headers / etc.
 	 *  - You have several providers for whatever reason (you probably shouldn't).
 	 *
-	 * @since 1.0.0
+	 * @since 1.0
 	 */
 	rootRef?: React.Component<unknown> | null;
 }>;
@@ -30,7 +37,7 @@ export type HighlightableElementProviderProps = PropsWithChildren<{
  * If the `rootRef` prop **is** set it only has to be above the `rootRef` and all `HighlightOverlay`
  * and `HighlightableElement` that is being used.
  *
- * @since 1.0.0
+ * @since 1.0
  */
 function HighlightableElementProvider({
 	rootRef: externalRootRef,
@@ -40,6 +47,7 @@ function HighlightableElementProvider({
 		externalRootRef ?? null
 	);
 	const [elements, setElements] = useState<ElementsRecord>({});
+	const [currentActiveOverlay, setCurrentActiveOverlay] = useState<OverlayData | null>(null);
 
 	const addElement = useCallback<AddElement>(
 		(id, node, bounds, options) => {
@@ -61,13 +69,38 @@ function HighlightableElementProvider({
 		});
 	}, []);
 
+	const getRootRef = useCallback<RootRefGetter>(
+		() => externalRootRef ?? rootRef,
+		[externalRootRef, rootRef]
+	);
+
+	const getCurrentActiveOverlay = useCallback<GetCurrentActiveOverlay>(
+		() => currentActiveOverlay,
+		[currentActiveOverlay]
+	);
+
 	const contextValue = useMemo(
 		() =>
 			Object.freeze([
 				elements,
-				{ addElement, removeElement, rootRef: externalRootRef ?? rootRef },
+				{
+					addElement,
+					removeElement,
+					rootRef: externalRootRef ?? rootRef,
+					getRootRef,
+					setCurrentActiveOverlay,
+					getCurrentActiveOverlay,
+				},
 			] as const),
-		[addElement, elements, externalRootRef, removeElement, rootRef]
+		[
+			addElement,
+			elements,
+			externalRootRef,
+			getCurrentActiveOverlay,
+			getRootRef,
+			removeElement,
+			rootRef,
+		]
 	);
 
 	if (externalRootRef == null) {
