@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import type { RectProps } from "react-native-svg";
 import Svg, { ClipPath, Defs, Path, Rect } from "react-native-svg";
 
 import constructClipPath from "./constructClipPath";
 import { useHighlightableElements } from "./context";
 import type { Bounds } from "./context/context";
 
-const DEFAULT_OVERLAY_STYLE: OverlayStyle = {
+const AnimatedSvg = Animated.createAnimatedComponent(Svg);
+
+const DEFAULT_OVERLAY_STYLE: Required<OverlayStyle> = {
 	color: "black",
 	opacity: 0.7,
 };
@@ -28,6 +32,8 @@ export type OverlayStyle = {
 	 */
 	opacity?: number;
 };
+
+export type EnteringAnimation = Animated.AnimateProps<RectProps>["entering"];
 
 export type HighlightOverlayProps = {
 	/**
@@ -54,6 +60,30 @@ export type HighlightOverlayProps = {
 	 * @since 1.3
 	 */
 	overlayStyle?: OverlayStyle;
+
+	/**
+	 * The animation when the overlay is entering the screen. Defaults to `FadeIn`.
+	 * Set to `null` (not `undefined`!) to disable animation.
+	 *
+	 * @default FadeIn
+	 * @example
+	 * import { FadeIn } from "react-native-reanimated";
+	 * <HighlightOverlay entering={FadeIn} />
+	 * @since 1.3
+	 */
+	entering?: EnteringAnimation | null;
+
+	/**
+	 * The animation when the overlay is exiting the screen. Defaults to `FadeOut`.
+	 * Set to `null` (not `undefined`!) to disable animation.
+	 *
+	 * @default undefined
+	 * @example
+	 * import { FadeOut } from "react-native-reanimated";
+	 * <HighlightOverlay exiting={FadeOut} />
+	 * @since 1.3
+	 */
+	exiting?: EnteringAnimation | null;
 };
 
 /**
@@ -70,14 +100,19 @@ function HighlightOverlay({
 	highlightedElementId,
 	onDismiss,
 	overlayStyle = DEFAULT_OVERLAY_STYLE,
+	entering = FadeIn,
+	exiting = FadeOut,
 }: HighlightOverlayProps) {
+	const [elements] = useHighlightableElements();
 	const [parentSize, setParentSize] = useState<Bounds | null>();
 
-	const [elements] = useHighlightableElements();
-	const highlightedElementData =
-		highlightedElementId != null ? elements[highlightedElementId] : null;
-	const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
+	const highlightedElementData = useMemo(
+		() => (highlightedElementId != null ? elements[highlightedElementId] : null),
+		[elements, highlightedElementId]
+	);
 
+	const hasContent = highlightedElementData != null && parentSize != null;
+	const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
 	const { color = DEFAULT_OVERLAY_STYLE.color, opacity = DEFAULT_OVERLAY_STYLE.opacity } =
 		overlayStyle;
 
@@ -87,34 +122,45 @@ function HighlightOverlay({
 			onLayout={({ nativeEvent: { layout } }) => setParentSize(layout)}
 			pointerEvents="box-none"
 		>
-			{highlightedElementData != null && parentSize != null && (
-				<Svg
+			{hasContent && (
+				<AnimatedSvg
 					style={StyleSheet.absoluteFill}
 					pointerEvents={clickThrough ? "box-none" : "auto"}
 					onPress={!clickThrough ? onDismiss : undefined}
+					entering={entering ?? undefined}
+					exiting={exiting ?? FadeOut}
 				>
 					<Defs>
-						<ClipPath id="elementBounds">
-							<Path
-								d={constructClipPath(highlightedElementData, parentSize)}
-								clipRule="evenodd"
-							/>
-						</ClipPath>
+						{Object.entries(elements).map(([id, element]) => (
+							<ClipPath key={id} id={id}>
+								<Path
+									d={constructClipPath(element, parentSize)}
+									clipRule="evenodd"
+								/>
+							</ClipPath>
+						))}
 					</Defs>
 					<Rect
 						x={0}
 						y={0}
 						width="100%"
 						height="100%"
-						clipPath="#elementBounds"
+						clipPath={`#${highlightedElementId}`}
 						fill={color}
 						fillOpacity={opacity}
-						onPress={onDismiss}
 					/>
-				</Svg>
+				</AnimatedSvg>
 			)}
 		</View>
 	);
 }
 
-export default HighlightOverlay;
+export default React.memo(
+	HighlightOverlay,
+	(prevProps, nextProps) =>
+		// We need this here so we don't check the `onDismiss` prop.
+		prevProps.highlightedElementId === nextProps.highlightedElementId &&
+		prevProps.overlayStyle?.color === nextProps.overlayStyle?.color &&
+		prevProps.overlayStyle?.opacity === nextProps.overlayStyle?.opacity &&
+		prevProps.entering === nextProps.entering
+);
