@@ -1,18 +1,17 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FadeDuringHighlight } from "react-native-highlight-overlay";
 
-export type HeaderProps = {};
-
-function Header({}: HeaderProps) {
+function Header() {
 	return (
-		<View style={styles.container}>
+		<FadeDuringHighlight style={styles.container}>
 			<View style={styles.countContainer}>
 				<Text style={styles.countSmall}>25</Text>
 				<Text style={styles.countLarge}>/30</Text>
 			</View>
 			<Text style={styles.title}>Radio 160</Text>
 			<Text style={styles.favorites}>115k+ favourites</Text>
-		</View>
+		</FadeDuringHighlight>
 	);
 }
 
