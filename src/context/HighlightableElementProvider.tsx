@@ -2,7 +2,14 @@ import type { PropsWithChildren } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import type { AddElement, ElementsRecord, RemoveElement, RootRefGetter } from "./context";
+import type {
+	AddElement,
+	ElementsRecord,
+	GetCurrentActiveOverlay,
+	OverlayData,
+	RemoveElement,
+	RootRefGetter,
+} from "./context";
 import HighlightableElementContext from "./context";
 
 export type HighlightableElementProviderProps = PropsWithChildren<{
@@ -39,6 +46,7 @@ function HighlightableElementProvider({
 		externalRootRef ?? null
 	);
 	const [elements, setElements] = useState<ElementsRecord>({});
+	const [currentActiveOverlay, setCurrentActiveOverlay] = useState<OverlayData | null>(null);
 
 	const addElement = useCallback<AddElement>((id, node, bounds, options) => {
 		setElements((oldElements) => ({ ...oldElements, [id]: { node, bounds, options } }));
@@ -56,13 +64,33 @@ function HighlightableElementProvider({
 		[externalRootRef, rootRef]
 	);
 
+	const getCurrentActiveOverlay = useCallback<GetCurrentActiveOverlay>(
+		() => currentActiveOverlay,
+		[currentActiveOverlay]
+	);
+
 	const contextValue = useMemo(
 		() =>
 			Object.freeze([
 				elements,
-				{ addElement, removeElement, rootRef: externalRootRef ?? rootRef, getRootRef },
+				{
+					addElement,
+					removeElement,
+					rootRef: externalRootRef ?? rootRef,
+					getRootRef,
+					setCurrentActiveOverlay,
+					getCurrentActiveOverlay,
+				},
 			] as const),
-		[addElement, elements, externalRootRef, getRootRef, removeElement, rootRef]
+		[
+			addElement,
+			elements,
+			externalRootRef,
+			getCurrentActiveOverlay,
+			getRootRef,
+			removeElement,
+			rootRef,
+		]
 	);
 
 	if (externalRootRef == null) {
