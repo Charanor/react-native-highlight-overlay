@@ -103,7 +103,7 @@ function HighlightOverlay({
 	entering = FadeIn,
 	exiting = FadeOut,
 }: HighlightOverlayProps) {
-	const [elements] = useHighlightableElements();
+	const [elements, { setCurrentActiveOverlay }] = useHighlightableElements();
 	const [parentSize, setParentSize] = useState<Bounds | null>();
 
 	const highlightedElementData = useMemo(
@@ -115,6 +115,14 @@ function HighlightOverlay({
 	const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
 	const { color = DEFAULT_OVERLAY_STYLE.color, opacity = DEFAULT_OVERLAY_STYLE.opacity } =
 		overlayStyle;
+
+	useEffect(() => {
+		setCurrentActiveOverlay(
+			highlightedElementId == null ? null : { color, opacity, entering, exiting, onDismiss }
+		);
+		// Dependency array should NOT include `onDismiss` prop
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [color, entering, exiting, highlightedElementId, opacity, setCurrentActiveOverlay]);
 
 	return (
 		<View
