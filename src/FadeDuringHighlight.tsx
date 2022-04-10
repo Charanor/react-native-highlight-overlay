@@ -24,8 +24,6 @@ function FadeDuringHighlight({ children, style }: FadeDuringHighlightProps) {
 
 	const currentActiveOverlay = getCurrentActiveOverlay();
 
-	console.debug({ currentActiveOverlay });
-
 	return (
 		<View style={style}>
 			{children}
