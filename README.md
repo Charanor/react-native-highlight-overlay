@@ -25,6 +25,23 @@ highlighting an element when the user enters the app from a deep link.
    element will not properly overlay the "root" element. This is because of how React Native handles
    measuring positions & sizes. I'm working on possible fixes to make this more
    user-friendly.
+ - If you want to conditionally render a `HighligtableElement`, you must instead conditionally render the contents of the element:
+   ```
+   // From:
+   {showElement && (
+     <HighligtableElement>
+       <OtherComponent />
+     </HighligtableElement>
+   )}
+   
+   // To
+   <HighligtableElement>
+     {showElement && (
+       <OtherComponent />
+     )}
+   </HighligtableElement>
+   ```
+   `HighligtableElement` is an unstyled `View`, but it is non-collapsible so it won't get optimized away. This shouldn't change how your app is displayed, except in rare circumstanses.
 
 ## Installation
 
