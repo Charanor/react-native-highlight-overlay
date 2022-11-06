@@ -4,3 +4,4 @@ lib
 coverage
 scripts
 example
+*.config.js

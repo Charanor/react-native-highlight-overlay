@@ -1,15 +1,52 @@
 {
 	"root": true,
-	"extends": ["react-native-wcandillon", "prettier"],
+	"extends": [
+		"@react-native-community",
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"react-native-wcandillon",
+		"prettier"
+	],
 	"rules": {
+		"no-plusplus": "off",
+		"yoda": ["error", "never", { "exceptRange": true }],
 		"no-undef": "off",
+		"no-unused-vars": "off",
+		"no-empty-pattern": "error",
+		"eqeqeq": ["error", "always", { "null": "never" }],
+		"no-shadow": "off",
 		"react/jsx-indent": ["error", "tab"],
 		"react/jsx-indent-props": ["error", "tab"],
-		"@typescript-eslint/no-use-before-define": "off",
-		"no-plusplus": "off",
+		"react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
+		"react-hooks/exhaustive-deps": "error",
+		"react-native/no-inline-styles": "error",
 		"react-native/no-unused-styles": "error",
-		"yoda": ["error", "never", { "exceptRange": true }],
-		"@typescript-eslint/no-unused-vars": "off",
-		"import/no-default-export": "off"
+		"import/no-default-export": "off",
+		"no-unsafe-optional-chaining": ["error", { "disallowArithmeticOperators": true }],
+		"@typescript-eslint/explicit-module-boundary-types": "error",
+		"@typescript-eslint/no-use-before-define": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_",
+				"ignoreRestSiblings": true
+			}
+		],
+		"@typescript-eslint/no-shadow": "error",
+		"@typescript-eslint/strict-boolean-expressions": [
+			"error",
+			{
+				"allowString": false,
+				"allowNumber": false,
+				"allowNullableObject": false
+			}
+		],
+		"@typescript-eslint/no-inferrable-types": "error",
+		"@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+		"@typescript-eslint/ban-ts-comment": "error"
+	},
+	"parserOptions": {
+		"project": ["tsconfig.json"]
 	}
 }
