@@ -1,6 +1,7 @@
 import React from "react";
 import type { ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image as RNImage, Text, View } from "react-native";
+import { styled } from "../../styled";
 
 export const ICON_SIZE = {
 	width: 100,
@@ -17,27 +18,27 @@ export type SimilarItemProps = {
 
 function SimilarItem({ title, imageSource, style }: SimilarItemProps) {
 	return (
-		<View style={[styles.container, style]}>
-			<Image source={imageSource} style={styles.image} />
-			<Text style={styles.title}>{title}</Text>
-		</View>
+		<Container style={style}>
+			<Image source={imageSource} />
+			<Title>{title}</Title>
+		</Container>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		alignItems: "center",
-		backgroundColor: "#F0F0F0",
-		borderRadius: BORDER_RADUIS,
-	},
-	image: {
-		...ICON_SIZE,
-		borderRadius: BORDER_RADUIS,
-		marginBottom: 10,
-	},
-	title: {
-		fontSize: 14,
-	},
+const Container = styled(View, {
+	alignItems: "center",
+	backgroundColor: "#F0F0F0",
+	borderRadius: BORDER_RADUIS,
+});
+
+const Image = styled(RNImage, {
+	...ICON_SIZE,
+	borderRadius: BORDER_RADUIS,
+	marginBottom: 10,
+});
+
+const Title = styled(Text, {
+	fontSize: 14,
 });
 
 export default SimilarItem;

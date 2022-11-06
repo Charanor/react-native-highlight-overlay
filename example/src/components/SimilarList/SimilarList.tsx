@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { HighlightableElement } from "react-native-highlight-overlay";
+import { styled } from "../../styled";
 
 import { getRandomImage } from "../../util";
 import ListHeader from "../ListHeader";
@@ -30,42 +31,61 @@ export type SimilarListProps = {
 
 function SimilarList({ setHighlightId }: SimilarListProps) {
 	return (
-		<View style={styles.container}>
+		<Container>
 			<ListHeader
-				title="Similar brodcast"
+				title="Similar broadcast"
 				onHighlightPressed={() => {
 					const randomIdx = Math.round(Math.random() * (SIMILAR_ITEMS.length - 1));
 					const item = SIMILAR_ITEMS[randomIdx];
 					setHighlightId(getUniqueKeyForItem(item));
 				}}
 			/>
-			<View style={styles.listContainer}>
+			<ListContainer>
 				{SIMILAR_ITEMS.map((item) => (
 					<HighlightableElement
 						key={getUniqueKeyForItem(item)}
 						id={getUniqueKeyForItem(item)}
 						options={{
-							mode: "circle",
-							padding: 15,
+							mode: "custom",
+							clickthroughHighlight: false,
+							createPath: ({ x, y, width, height }) =>
+								[
+									M(x + width * 0.5, y),
+									L(x + width * 0.65, y + height * 0.33),
+									L(x + width, y + height * 0.33),
+									L(x + width * 0.7, y + height * 0.6),
+									L(x + width * 0.85, y + height),
+
+									L(x + width * 0.5, y + height * 0.75),
+
+									L(x + width * 0.15, y + height),
+									L(x + width * 0.3, y + height * 0.6),
+									L(x, y + height * 0.33),
+									L(x + width * 0.35, y + height * 0.33),
+									z,
+								].join(" "),
 						}}
 					>
 						<SimilarItem {...item} />
 					</HighlightableElement>
 				))}
-			</View>
-		</View>
+			</ListContainer>
+		</Container>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	listContainer: {
-		flex: 1,
-		flexDirection: "row",
-		justifyContent: "space-between",
-	},
+const M = (x: number, y: number) => `M ${x} ${y}`;
+const L = (x: number, y: number) => `L ${x} ${y}`;
+const z = "z";
+
+const Container = styled(View, {
+	flex: 1,
+});
+
+const ListContainer = styled(View, {
+	flex: 1,
+	flexDirection: "row",
+	justifyContent: "space-between",
 });
 
 export default SimilarList;
