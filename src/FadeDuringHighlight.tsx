@@ -19,7 +19,7 @@ export type FadeDuringHighlightProps = PropsWithChildren<{
  *
  * @since 1.3
  */
-function FadeDuringHighlight({ children, style }: FadeDuringHighlightProps) {
+function FadeDuringHighlight({ children, style }: FadeDuringHighlightProps): JSX.Element {
 	const [_, { getCurrentActiveOverlay }] = useHighlightableElements();
 
 	const currentActiveOverlay = getCurrentActiveOverlay();
@@ -39,7 +39,7 @@ function FadeDuringHighlight({ children, style }: FadeDuringHighlightProps) {
 							StyleSheet.absoluteFill,
 							{
 								backgroundColor: currentActiveOverlay.color,
-								opacity: 0.7,
+								opacity: currentActiveOverlay.opacity,
 							},
 						]}
 					/>

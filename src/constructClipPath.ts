@@ -15,6 +15,15 @@ const arc = (toX: number, toY: number, radius: number) =>
 	`A ${radius},${radius} 0 0 0 ${toX},${toY}`;
 const z = "z";
 
+const filledSquare = (parentBounds: ElementBounds): string =>
+	[
+		M(parentBounds.startX, parentBounds.startY),
+		L(parentBounds.startX, parentBounds.endY),
+		L(parentBounds.endX, parentBounds.endY),
+		L(parentBounds.endX, parentBounds.startY),
+		z,
+	].join(" ");
+
 const constructClipPath = (data: ElementsRecord[string], containerSize: Bounds): string => {
 	const parentBounds = {
 		startX: 0,
@@ -37,6 +46,9 @@ const constructClipPath = (data: ElementsRecord[string], containerSize: Bounds):
 				{ cx: x + width / 2 + offsetX, cy: y + height / 2 + offsetY },
 				radius + padding
 			);
+		}
+		case "custom": {
+			return constructCustomPath(data.options.createPath(data.bounds), parentBounds);
 		}
 		case "rectangle": // !Fallthrough
 		default: {
@@ -62,11 +74,7 @@ const constructRectangularPath = (
 	borderRadius: number
 ): string => {
 	return [
-		M(parentBounds.startX, parentBounds.startY),
-		L(parentBounds.startX, parentBounds.endY),
-		L(parentBounds.endX, parentBounds.endY),
-		L(parentBounds.endX, parentBounds.startY),
-		z,
+		filledSquare(parentBounds),
 		M(startX, startY + borderRadius),
 		L(startX, endY - borderRadius),
 		arc(startX + borderRadius, endY, borderRadius),
@@ -85,16 +93,15 @@ const constructCircularPath = (
 	radius: number
 ): string => {
 	return [
-		M(parentBounds.startX, parentBounds.startY),
-		L(parentBounds.startX, parentBounds.endY),
-		L(parentBounds.endX, parentBounds.endY),
-		L(parentBounds.endX, parentBounds.startY),
-		z,
+		filledSquare(parentBounds),
 		M(cx, cy),
 		`m ${-radius} 0`,
 		`a ${radius},${radius} 0 1,0 ${radius * 2},0`,
 		`a ${radius},${radius} 0 1,0 ${-radius * 2},0`,
 	].join(" ");
 };
+
+const constructCustomPath = (userDefinedPath: string, parentBounds: ElementBounds): string =>
+	[filledSquare(parentBounds), userDefinedPath].join(" ");
 
 export default constructClipPath;
