@@ -5,6 +5,7 @@ import { HighlightableElementProvider, HighlightOverlay } from "react-native-hig
 import FavoriteList from "./components/FavoriteList";
 import Header from "./components/Header";
 import SimilarList from "./components/SimilarList";
+import { styled } from "./styled";
 
 export const HIGHLIGHTED_ID_1 = "one";
 export const HIGHLIGHTED_ID_2 = "two";
@@ -17,10 +18,10 @@ function App() {
 		<HighlightableElementProvider rootRef={rootRef}>
 			<Header />
 			<ScrollView ref={setRootRef}>
-				<View style={styles.container}>
+				<Container>
 					<FavoriteList {...{ setHighlightId }} />
 					<SimilarList {...{ setHighlightId }} />
-				</View>
+				</Container>
 				<HighlightOverlay
 					highlightedElementId={highlightedId}
 					onDismiss={() => setHighlightId(null)}
@@ -30,11 +31,9 @@ function App() {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: "#F0F0F0",
-		padding: 25,
-	},
+const Container = styled(View, {
+	backgroundColor: "#F0F0F0",
+	padding: 25,
 });
 
 export default App;

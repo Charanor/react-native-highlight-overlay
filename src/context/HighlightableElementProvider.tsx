@@ -42,7 +42,7 @@ export type HighlightableElementProviderProps = PropsWithChildren<{
 function HighlightableElementProvider({
 	rootRef: externalRootRef,
 	children,
-}: HighlightableElementProviderProps) {
+}: HighlightableElementProviderProps): JSX.Element {
 	const [rootRef, setRootRef] = useState<React.Component<unknown> | null>(
 		externalRootRef ?? null
 	);
@@ -52,7 +52,7 @@ function HighlightableElementProvider({
 	const addElement = useCallback<AddElement>(
 		(id, node, bounds, options) => {
 			if (
-				!elements[id] ||
+				elements[id] == null ||
 				!isEqual(bounds, elements[id].bounds) ||
 				!isEqual(options, elements[id].options)
 			) {

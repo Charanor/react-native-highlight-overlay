@@ -25,45 +25,47 @@ export type HighlightableElementProps = PropsWithChildren<{
  *
  * @since 1.0
  */
-function HighlightableElement({ id, options, children, style }: HighlightableElementProps) {
-	const ref = useRef<View | null>(null);
+const HighlightableElement = React.memo(
+	({ id, options, children, style }: HighlightableElementProps) => {
+		const ref = useRef<View | null>(null);
 
-	const [_, { addElement, getRootRef }] = useHighlightableElements();
-	const rootRef = getRootRef();
+		const [_, { addElement, getRootRef }] = useHighlightableElements();
+		const rootRef = getRootRef();
 
-	useEffect(() => {
-		const refVal = ref.current;
-		if (refVal == null || rootRef == null) {
-			return;
-		}
+		useEffect(() => {
+			const refVal = ref.current;
+			if (refVal == null || rootRef == null) {
+				return;
+			}
 
-		const timeoutId = setTimeout(() => {
-			ref.current?.measureLayout(
-				// This is a typing error on ReactNative's part. 'rootRef' is a valid reference.
-				rootRef as unknown as HostComponent<unknown>,
-				(x, y, width, height) => {
-					addElement(id, children, { x, y, width, height }, options);
-				},
-				() => {
-					ref.current?.measureInWindow((x, y, width, height) => {
+			const timeoutId = setTimeout(() => {
+				ref.current?.measureLayout(
+					// This is a typing error on ReactNative's part. 'rootRef' is a valid reference.
+					rootRef as unknown as HostComponent<unknown>,
+					(x, y, width, height) => {
 						addElement(id, children, { x, y, width, height }, options);
-					});
-				}
-			);
-		}, 0);
+					},
+					() => {
+						ref.current?.measureInWindow((x, y, width, height) => {
+							addElement(id, children, { x, y, width, height }, options);
+						});
+					}
+				);
+			}, 0);
 
-		return () => {
-			clearTimeout(timeoutId);
-		};
-		// We don't want to re-run this effect when addElement or removeElement changes.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id, children, rootRef]);
+			return () => {
+				clearTimeout(timeoutId);
+			};
+			// We don't want to re-run this effect when addElement or removeElement changes.
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, [id, children, rootRef]);
 
-	return (
-		<View collapsable={false} ref={ref} style={style}>
-			{children}
-		</View>
-	);
-}
+		return (
+			<View collapsable={false} ref={ref} style={style}>
+				{children}
+			</View>
+		);
+	}
+);
 
-export default React.memo(HighlightableElement);
+export default HighlightableElement;

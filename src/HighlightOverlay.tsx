@@ -96,76 +96,76 @@ export type HighlightOverlayProps = {
  *
  * @since 1.0
  */
-function HighlightOverlay({
-	highlightedElementId,
-	onDismiss,
-	overlayStyle = DEFAULT_OVERLAY_STYLE,
-	entering = FadeIn,
-	exiting = FadeOut,
-}: HighlightOverlayProps) {
-	const [elements, { setCurrentActiveOverlay }] = useHighlightableElements();
-	const [parentSize, setParentSize] = useState<Bounds | null>();
+const HighlightOverlay = React.memo(
+	({
+		highlightedElementId,
+		onDismiss,
+		overlayStyle = DEFAULT_OVERLAY_STYLE,
+		entering = FadeIn,
+		exiting = FadeOut,
+	}: HighlightOverlayProps) => {
+		const [elements, { setCurrentActiveOverlay }] = useHighlightableElements();
+		const [parentSize, setParentSize] = useState<Bounds | null>();
 
-	const highlightedElementData = useMemo(
-		() => (highlightedElementId != null ? elements[highlightedElementId] : null),
-		[elements, highlightedElementId]
-	);
-
-	const hasContent = highlightedElementData != null && parentSize != null;
-	const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
-	const { color = DEFAULT_OVERLAY_STYLE.color, opacity = DEFAULT_OVERLAY_STYLE.opacity } =
-		overlayStyle;
-
-	useEffect(() => {
-		setCurrentActiveOverlay(
-			highlightedElementId == null ? null : { color, opacity, entering, exiting, onDismiss }
+		const highlightedElementData = useMemo(
+			() => (highlightedElementId != null ? elements[highlightedElementId] : null),
+			[elements, highlightedElementId]
 		);
-		// Dependency array should NOT include `onDismiss` prop
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [color, entering, exiting, highlightedElementId, opacity, setCurrentActiveOverlay]);
 
-	return (
-		<View
-			style={StyleSheet.absoluteFill}
-			onLayout={({ nativeEvent: { layout } }) => setParentSize(layout)}
-			pointerEvents="box-none"
-		>
-			{hasContent && (
-				<AnimatedSvg
-					key={highlightedElementId}
-					pointerEvents={clickThrough ? "none" : "auto"}
-					onPress={!clickThrough ? onDismiss : undefined}
-					entering={entering ?? undefined}
-					exiting={exiting ?? FadeOut}
-					style={StyleSheet.absoluteFill}
-				>
-					<Defs>
-						{Object.entries(elements).map(([id, element]) => (
-							<ClipPath key={id} id={id}>
-								<Path
-									d={constructClipPath(element, parentSize)}
-									clipRule="evenodd"
-								/>
-							</ClipPath>
-						))}
-					</Defs>
-					<Rect
-						x={0}
-						y={0}
-						width="100%"
-						height="100%"
-						clipPath={`#${highlightedElementId}`}
-						fill={color}
-						fillOpacity={opacity}
-					/>
-				</AnimatedSvg>
-			)}
-		</View>
-	);
-}
+		const hasContent = highlightedElementData != null && parentSize != null;
+		const clickThrough = highlightedElementData?.options?.clickthroughHighlight ?? true;
+		const { color = DEFAULT_OVERLAY_STYLE.color, opacity = DEFAULT_OVERLAY_STYLE.opacity } =
+			overlayStyle;
 
-export default React.memo(
-	HighlightOverlay,
+		useEffect(() => {
+			setCurrentActiveOverlay(
+				highlightedElementId == null
+					? null
+					: { color, opacity, entering, exiting, onDismiss }
+			);
+			// Dependency array should NOT include `onDismiss` prop
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, [color, entering, exiting, highlightedElementId, opacity, setCurrentActiveOverlay]);
+
+		return (
+			<View
+				style={StyleSheet.absoluteFill}
+				onLayout={({ nativeEvent: { layout } }) => setParentSize(layout)}
+				pointerEvents="box-none"
+			>
+				{hasContent && (
+					<AnimatedSvg
+						key={highlightedElementId}
+						pointerEvents={clickThrough ? "none" : "auto"}
+						onPress={!clickThrough ? onDismiss : undefined}
+						entering={entering ?? undefined}
+						exiting={exiting ?? FadeOut}
+						style={StyleSheet.absoluteFill}
+					>
+						<Defs>
+							{Object.entries(elements).map(([id, element]) => (
+								<ClipPath key={id} id={id}>
+									<Path
+										d={constructClipPath(element, parentSize)}
+										clipRule="evenodd"
+									/>
+								</ClipPath>
+							))}
+						</Defs>
+						<Rect
+							x={0}
+							y={0}
+							width="100%"
+							height="100%"
+							clipPath={`#${highlightedElementId}`}
+							fill={color}
+							fillOpacity={opacity}
+						/>
+					</AnimatedSvg>
+				)}
+			</View>
+		);
+	},
 	(prevProps, nextProps) =>
 		// We need this here so we don't check the `onDismiss` prop.
 		prevProps.highlightedElementId === nextProps.highlightedElementId &&
@@ -173,3 +173,5 @@ export default React.memo(
 		prevProps.overlayStyle?.opacity === nextProps.overlayStyle?.opacity &&
 		prevProps.entering === nextProps.entering
 );
+
+export default HighlightOverlay;

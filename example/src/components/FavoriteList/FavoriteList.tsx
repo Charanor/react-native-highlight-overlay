@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { HighlightableElement } from "react-native-highlight-overlay";
 
 import ListHeader from "../ListHeader";
 import { getRandomImage } from "../../util";
 
 import FavoriteItem, { ITEM_HEIGHT } from "./FavoriteItem";
+import { styled } from "../../styled";
 
 const FAVORITES_LIST = [
 	{
@@ -43,7 +44,7 @@ export type FavoriteListProps = {
 
 function FavoriteList({ setHighlightId }: FavoriteListProps) {
 	return (
-		<View style={styles.container}>
+		<Container>
 			<ListHeader
 				title={`My favourites (${FAVORITES_LIST.length})`}
 				onHighlightPressed={() => {
@@ -52,7 +53,7 @@ function FavoriteList({ setHighlightId }: FavoriteListProps) {
 					setHighlightId(getUniqueKeyForItem(item));
 				}}
 			/>
-			<View style={styles.listContainer}>
+			<ListContainer>
 				{FAVORITES_LIST.map((favItem) => (
 					<Fragment key={getUniqueKeyForItem(favItem)}>
 						<HighlightableElement
@@ -67,24 +68,24 @@ function FavoriteList({ setHighlightId }: FavoriteListProps) {
 							<FavoriteItem {...favItem} />
 						</HighlightableElement>
 						{/* We don't want to highlight the margin, so place it outside */}
-						<View style={styles.favoriteItemSpacing} />
+						<FavoriteItemSpacer />
 					</Fragment>
 				))}
-			</View>
-		</View>
+			</ListContainer>
+		</Container>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	listContainer: {
-		flex: 1,
-	},
-	favoriteItemSpacing: {
-		height: 15,
-	},
+const Container = styled(View, {
+	flex: 1,
+});
+
+const ListContainer = styled(View, {
+	flex: 1,
+});
+
+const FavoriteItemSpacer = styled(View, {
+	height: 15,
 });
 
 export default FavoriteList;
